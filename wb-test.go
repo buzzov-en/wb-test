@@ -21,7 +21,7 @@ func main(){
 		if err != nil { break }		
 		if i < k { 				//под каждый новый url создаю новый горутин, но не больше, чем k
 			go myTask(queue, &total, &wg) 	//таким образом, если k = 50, а строк с url 100, то будет создано 50 горутин
-			i++							 								 //но если k = 1000, а строк 100, то будет создано 100 горутин 	
+			i++				//но если k = 1000, а строк 100, то будет создано 100 горутин 	
 		}
 		queue <- str				//отправляю url обрабатываться на свободную горутину
 	}
@@ -53,6 +53,6 @@ func counter(url string) int{				//функция, совершающая отп
 	defer res.Body.Close()  
 	s := string(body[:])
 	n := strings.Count(s, "Go")
-	fmt.Println("Count for", url + ":", strings.Count(s, "Go")) 		  //вывод результата выполнения функции подсчета вхождений строки
+	fmt.Println("Count for", url + ":", strings.Count(s, "Go")) 	//вывод результата выполнения функции подсчета вхождений строки
 	return n;
 }
