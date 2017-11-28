@@ -31,7 +31,7 @@ func main(){
 
 func myTask( queue <- chan string, total *int, wg *sync.WaitGroup){      //в запущенном горутине функция слушает канал и принимает URL из очереди
 	//fmt.Println("routine created")
-	wg.Add(1)					//для синхронизации с main(), даем понять что появился работающий горутин
+	wg.Add(1)					//для синхронизации с main(), даем понять, что появился работающий горутин
 	for job:= range queue{												
 		*total = *total + counter(job)			//для отправки запроса и подсчета тут вызывается отдельная функция
 	}
