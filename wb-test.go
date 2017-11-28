@@ -9,37 +9,37 @@ import(
 )
 
 func main(){
-	var wg = sync.WaitGroup{} 											 //использую это для синхронизации созданных горутинов
+	var wg = sync.WaitGroup{} 			//использую это для синхронизации созданных горутинов
 	var total int
 	var str string
-	queue := make(chan string) 											 //канал, на который я посылаю "задания"
+	queue := make(chan string) 			//канал, на который я посылаю "задания"
 
-	i, k := 0, 5														 //тут задается параметр k
+	i, k := 0, 5				        //тут задается параметр k
 
 	for true {															 //читаю stdin построчно, пока он не закончится
 		_, err := fmt.Scanln(&str)  
 		if err != nil { break }		
 		if i < k { 						 								 //под каждый новый url создаю новый горутин, но не больше, чем k
-			go myTask(queue, &total, &wg) 								 //таким образом, если k = 50, а строк с url 100, то будет создано 50 горутин
+			go myTask(queue, &total, &wg) 	//таким образом, если k = 50, а строк с url 100, то будет создано 50 горутин
 			i++							 								 //но если k = 1000, а строк 100, то будет создано 100 горутин 	
 		}
-		queue <- str					  								 //отправляю url обрабатываться на свободную горутину
+		queue <- str				//отправляю url обрабатываться на свободную горутину
 	}
 	close(queue)
-	wg.Wait()                             								 //жду, пока созданные горутины закончат работать
-	defer fmt.Println("Total", total)   								 //вывожу общий результат
+	wg.Wait()                             		 //жду, пока созданные горутины закончат работать
+	defer fmt.Println("Total", total)   		 //вывожу общий результат
 }
 
 func myTask( queue <- chan string, total *int, wg *sync.WaitGroup){      //в запущенном горутине функция слушает канал и принимает URL из очереди
 	//fmt.Println("routine created")
 	wg.Add(1)															 //для синхронизации с main(), даем понять что появился работающий горутин
 	for job:= range queue{												
-		*total += counter(job)											 //для отправки запроса и подсчета тут вызывается отдельная функция
+		*total += counter(job)			//для отправки запроса и подсчета тут вызывается отдельная функция
 	}
 	wg.Done()															 //для синхронизации с main(), даем понять что его работа закончена
 }
 
-func counter(url string) int{											 //функция, совершающая отправку запроса и подсчет вхождений строки
+func counter(url string) int{				//функция, совершающая отправку запроса и подсчет вхождений строки
 	res, err := http.Get(url)
 	if err != nil {
 		fmt.Println("Incorrect input")
