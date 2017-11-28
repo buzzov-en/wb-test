@@ -36,7 +36,7 @@ func myTask( queue <- chan string, total *int, wg *sync.WaitGroup){      //в з
 	for job:= range queue{												
 		*total += counter(job)			//для отправки запроса и подсчета тут вызывается отдельная функция
 	}
-	wg.Done()					 //для синхронизации с main(), даем понять что его работа закончена
+	wg.Done()					 //для синхронизации с main(), даем понять, что работа горутина закончена
 }
 
 func counter(url string) int{				//функция, совершающая отправку запроса и подсчет вхождений строки
