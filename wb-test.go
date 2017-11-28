@@ -10,10 +10,9 @@ import(
 
 func main(){
 	var wg = sync.WaitGroup{} 			//использую это для синхронизации созданных горутинов
-	var total int
 	var str string
 	queue := make(chan string) 			//канал, на который я посылаю "задания"
-
+	total := 0
 	i, k := 0, 5				        //тут задается параметр k
 
 	for true {					//читаю stdin построчно, пока он не закончится
@@ -34,7 +33,7 @@ func myTask( queue <- chan string, total *int, wg *sync.WaitGroup){      //в з
 	//fmt.Println("routine created")
 	wg.Add(1)					//для синхронизации с main(), даем понять что появился работающий горутин
 	for job:= range queue{												
-		*total += counter(job)			//для отправки запроса и подсчета тут вызывается отдельная функция
+		*total = *total + counter(job)			//для отправки запроса и подсчета тут вызывается отдельная функция
 	}
 	wg.Done()					 //для синхронизации с main(), даем понять, что работа горутина закончена
 }
